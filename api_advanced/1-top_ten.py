@@ -16,11 +16,11 @@ def top_ten(subreddit):
         None
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {"User-Agent": "linux:api.advanced.project:v1.0 (by /u/alche_student)"}
+    headers = {"User-Agent": "linux:api.advanced.project:v1.0"}
     params = {"limit": 10}
 
-    response = requests.get(url, headers=headers, params=params,
-                             allow_redirects=False)
+    response = requests.get(
+        url, headers=headers, params=params, allow_redirects=False)
 
     if response.status_code != 200:
         print(None)
