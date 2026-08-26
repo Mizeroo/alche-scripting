@@ -1,30 +1,40 @@
 #!/usr/bin/python3
 """
-0-subs
+1-top_ten
 """
 import requests
 
 
-def number_of_subscribers(subreddit):
-    """Query the Reddit API and return the number of subscribers for a
-    given subreddit.
+def top_ten(subreddit):
+    """Query the Reddit API and print the titles of the first 10 hot
+    posts for a given subreddit.
 
     Args:
         subreddit (str): The name of the subreddit to query.
 
     Returns:
-        int: The number of subscribers, or 0 if the subreddit is invalid.
+        None
     """
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {"User-Agent": "linux:api.advanced.project:v1.0"}
+    params = {"limit": 10}
 
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    response = requests.get(
+        url, headers=headers, params=params, allow_redirects=False)
 
     if response.status_code != 200:
-        return 0
+        print(None)
+        return
 
     try:
-        data = response.json()
-        return data.get("data", {}).get("subscribers", 0)
+        posts = response.json().get("data", {}).get("children", [])
     except ValueError:
-        return 0
+        print(None)
+        return
+
+    if not posts:
+        print(None)
+        return
+
+    for post in posts:
+        print(post.get("data", {}).get("title"))
